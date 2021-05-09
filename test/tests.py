@@ -16,12 +16,12 @@
 # altered in between executions (unless preconditions are used).
 tests = [ 
     {'description': 'This test will run first.',
-    'steps': [ {'inputs': [('PINA',0x00)], 'iterations': 1 } ],
+    'steps': [ {'inputs': [('PINA',0x00)], 'iterations': 5 } ],
     'expected': [('PORTB', 0x00)]
     },
     {'description': 'This test will run second.',
-    'steps': [ {'inputs': [('PINA', 0x01)],'iterations': 5}], # Set PIN to val then run one iteration
-        #{'inputs': [('PINA', 0x02)], 'iterations': 5 }, # Set PIN to val then run 300 ms
+    'steps': [ {'inputs': [('PINA', 0x01)],'iterations': 5}, # Set PIN to val then run one iteration
+        {'inputs': [('PINA', 0x00)], 'iterations': 5 }], # Set PIN to val then run 300 ms
         #{'inputs': [('PINA', 0x02)], 'iterations': 5 }, 
         #{'inputs': [('PINA',0x02)], 'iterations': 5}, ],
     'expected': [('PORTB', 0x40)] 
@@ -31,5 +31,5 @@ tests = [
 # Optionally you can add a set of "watch" variables these need to be global or static and may need
 # to be scoped at the function level (for static variables) if there are naming conflicts. The 
 # variables listed here will display everytime you hit (and stop at) a breakpoint
-watch = ['i', 'sound']
+watch = ['Tick0::i', 'sound', 'state1', 'state0', 'Tick0::res']
 
