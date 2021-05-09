@@ -7,7 +7,7 @@
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  *
- *	Youtube link: https://www.youtube.com/watch?v=6qfnKBpKBuU
+ *	Youtube link: https://www.youtube.com/watch?v=mVzm-Wy9hwY
  */
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -171,14 +171,9 @@ void Tick1() {
 }
 
 
-void Tick0() {
-    if (!sound) {
-	    set_PWM(0);
-	    return;
-    }
-    else {
+void Tick0() {    
 	static unsigned char i = 0;
-	unsigned char inA = ~PINA & 0x06;
+	unsigned char inA = ~PINA & 0x06;//FIXME fix negations
 	double freqs[8] = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25};
 	static double res;
 	switch (state0) {
@@ -229,22 +224,31 @@ void Tick0() {
 		case inc:
 			i = i + 1;
 			res = freqs[i];
-			set_PWM(res);
+			if (!sound)
+				set_PWM(0);
+			else
+				set_PWM(res);
 			break;
 		case dec:
 			i = i - 1;
 			res = freqs[i];
-			set_PWM(res);
+			if (!sound)
+				set_PWM(0);
+			else
+				set_PWM(res);
 			break;
 		case wait:
 			res = freqs[i];
-			set_PWM(res);
+			if (!sound)
+				set_PWM(0);
+			else
+				set_PWM(res);
 			break;
 		default:
 			set_PWM(0);
 			break;
 	}
-    }
+    
 }
 
 int main(void) {
