@@ -7,7 +7,7 @@
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  *
- *	Youtube link: https://www.youtube.com/watch?v=mVzm-Wy9hwY
+ *	Youtube link: https://www.youtube.com/watch?v=Hdr6xp3x5tk
  */
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -117,7 +117,7 @@ enum States1 {smstart1, wait1, play, wait2} state1;
 
 void Tick1() {
 	unsigned char check = ~PINA & 0x01;//FIXME negation
-	double freqs[40] = {261.63, 0, 0, 0, 293.66, 0, 0, 329.63, 0, 392, 0 , 0, 440, 0, 493.88, 0, 0, 523.25, 523.25, 0, 0, 392, 0, 0, 0, 523.25, 0, 0, 392, 0, 392, 0 , 0, 392, 0, 329, 0, 0, 523.25, 523.25};
+	double freqs[20] = {523.25, 523.25, 440, 440, 440, 440, 440, 440, 0, 261.63, 293.66, 392, 0, 0, 392, 0, 493.88, 523.25, 0, 392};
 	static unsigned char i;
 	static double res;
 	switch (state1) {
@@ -133,9 +133,9 @@ void Tick1() {
 				state1 = wait1;
 			break;
 		case play:
-			if (i < 40)
+			if (i < 20)
 				state1 = play;
-			else if (i == 40 && check == 0x01)
+			else if (i == 20 && check == 0x01)
 				state1 = wait2;
 			else
 				state1 = wait1;
@@ -258,7 +258,7 @@ int main(void) {
     PWM_off();
     PWM_on();
     TimerOff();
-    TimerSet(125);
+    TimerSet(250);
     TimerOn();
     //state0 = smstart0;
     state1 = smstart1;
